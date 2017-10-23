@@ -1,22 +1,15 @@
-<?php
-
-$page = "";
-$page .="<!DOCTYPE html>
-		<html lang='en-US'>
-		<head></head>";
-$page .="<h2>IS 601 PROJECT 1</h2>";
-$page .="<blockquote>Name: Mohammed Abdulai<br/>Prof: Keith Willams</br>Fall 2017</blockquote>";
-$page .= '
-<body style="background: #fafafa;">
-	<fieldset style="background: #fff;"><legend>This Program Accepts Only CSV Files</legend>
-		<form action="upload.php" method="post" enctype="multipart/form-data">
-		    Select file to upload:
-		    <input type="file" name="fileToUpload" id="fileToUpload">
-		    <input type="submit" value="Upload File" name="submit">
-		</form>
-	</fieldset>
-</body>';
-
-print $page;
-
-?>
+<?php 
+//turn on debugging messages
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
+//loads required classes; it finds and includes PHP file to prevent progam fail for calling a missing class
+class Manage {
+    static public  function autoload($class) 
+    {
+        include './classes/'. $class . '.php';
+    }
+}
+spl_autoload_register(array('Manage', 'autoload'));
+//instantiates the program object
+$obj = new main();
+ ?>
