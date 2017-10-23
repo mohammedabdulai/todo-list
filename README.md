@@ -1,2 +1,1 @@
-# project1
-IS601 Project1
+# PHP-File-Upload-Project1
