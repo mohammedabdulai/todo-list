@@ -25,6 +25,13 @@ class htmlTags
 	{
 		return '</body>';
 	}
+	static public function div($in)
+	{
+		$out="<div class='container'>
+				$in
+			  </div>";
+		return $out;
+	}
 	static public function h1($text)
 	{
 		return '<h1>'.$text.'</h1>';

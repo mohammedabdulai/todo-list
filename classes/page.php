@@ -17,13 +17,13 @@ abstract class page
         $this->html .= '<nav class="navbar navbar-inverse">
                           <div class="container-fluid">
                             <div class="navbar-header">
-                              <a class="navbar-brand" href="index.php?page=homepage">Todo List</a>
+                              <a class="navbar-brand" href="index.php?page=homepage">WebBull</a>
                             </div>
                             <ul class="nav navbar-nav">
                               <li class="active"><a href="index.php?page=homepage">Home</a></li>
                               <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                  <li><a href="index.php?page=todo-list">Todo List</a></li>
+                                  <li><a href="index.php?page=todos">Todo List</a></li>
                                   <li><a href="index.php?page=upload">Read CSV</a></li>
                                 </ul>
                               </li>
