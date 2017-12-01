@@ -1,25 +1,30 @@
-<!doctype html>
+<?php
+use utility\htmlTags;
+class show_task extends utility\page
+{
+    protected $page;
 
-<html lang="en">
-<head>
-    <meta charset="utf-8">
+    public function buildPage($content = '')
+    {
+        return $this->page .= $content . '<br>';
 
-    <title>The HTML5 Herald</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
+    }
 
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
+}
 
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <![endif]-->
-</head>
+$newPage = new show_task();
 
-<body>
+$header = '<div class="container"><center><h1>Oops! Something went wrong</h1></center></div>';
 
-<h1>Page Not Found 404</h1>
+$links = '<div class="container">
+<h3><a href="index.php?page=homepage">Go to Home</a></h3></div>';
 
+$errorPage = '<div class="container"><div class="panel text-center"><h1>HTTP Status 404: Page Not Found</h1></div></div>';
 
-<script src="js/scripts.js"></script>
-</body>
-</html>
+$newPage->buildPage($header);
+$newPage->buildPage($links);
+$newPage->buildPage($errorPage);
+$newPage->setHtml($newPage->buildPage());
+
+?>
+
