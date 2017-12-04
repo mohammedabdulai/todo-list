@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kwilliams
- * Date: 11/27/17
- * Time: 5:25 PM
- */
+
 class routes
 {
     public static function getRoutes()
@@ -33,7 +28,7 @@ class routes
         $route->http_method = 'POST';
         $route->action = 'create';
         $route->page = 'homepage';
-        $route->controller = 'homepageController';
+        $route->controller = 'tasksController';
         $route->method = 'create';
         $routes[] = $route;
         //This is an examole of the post for tasks to show a task
@@ -73,12 +68,37 @@ class routes
         $routes[] = $route;
         //This goes in the login form action method
         //GET METHOD index.php?page=accounts&action=login
+        //Login page route
         $route = new route();
-        $route->http_method = 'POST';
+        $route->http_method = 'GET';
         $route->action = 'login';
-        $route->page = 'accounts';
+        $route->page = 'login';
         $route->controller = 'accountsController';
         $route->method = 'login';
+        $routes[] = $route;
+        //Sign up page route
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'create';
+        $route->page = 'signUp';
+        $route->controller = 'accountsController';
+        $route->method = 'create';
+        $routes[] = $route;
+        //Profile page route
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'profile';
+        $route->page = 'account';
+        $route->controller = 'accountsController';
+        $route->method = 'profile';
+        $routes[] = $route;
+        //Logout page route
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'logout';
+        $route->page = 'account';
+        $route->controller = 'accountsController';
+        $route->method = 'logout';
         $routes[] = $route;
         //YOU WILL NEED TO ADD MORE ROUTES
         $route = new route();
@@ -88,6 +108,23 @@ class routes
         $route->controller = 'tasksController';
         $route->method = 'delete';
         $routes[] = $route;
+
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'edit';
+        $route->page = 'account';
+        $route->controller = 'accountsController';
+        $route->method = 'edit';
+        $routes[] = $route;
+
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'edit';
+        $route->page = 'task';
+        $route->controller = 'tasksController';
+        $route->method = 'edit';
+        $routes[] = $route;
+
         return $routes;
     }
 }
