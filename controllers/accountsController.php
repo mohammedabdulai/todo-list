@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kwilliams
- * Date: 11/27/17
- * Time: 5:32 PM
- */
+
 //each page extends controller and the index.php?page=tasks causes the controller to be called
 class accountsController extends http\controller
 {
@@ -27,20 +22,26 @@ class accountsController extends http\controller
     //this is to register an account i.e. insert a new account
     public static function register()
     {
-        //https://www.sitepoint.com/why-you-should-use-bcrypt-to-hash-stored-passwords/
-        //USE THE ABOVE TO SEE HOW TO USE Bcrypt
-        print_r($_POST);
-        //this just shows creating an account.
+        $passwordEntered = $_POST['password'];
+        $options = [
+            'cost' => 10
+        ];
+        $password =  password_hash($passwordEntered, PASSWORD_BCRYPT, $options);
+
         $record = new account();
-        $record->email = "kwilliam@njit.edu";
-        $record->fname = "test2";
-        $record->lname = "cccc2";
-        $record->phone = "4444444";
-        $record->birthday = "0";
-        $record->gender = "male";
-        $record->password = "12345";
+        $record->email = $_POST['username'];
+        $record->fname = $_POST['fname'];
+        $record->lname = $_POST['lname'];
+        $record->phone = '';
+        $record->birthday = '';
+        $record->gender = '';
+        $record->password = $password;
         $record->save();
+
+        //$record = accounts::findUser($record->email);
+        self::getTemplate('homepage', $record);
     }
+
     //this is the function to save the user the user profile
     public static function store()
     {
@@ -54,12 +55,65 @@ class accountsController extends http\controller
     //this is to login, here is where you find the account and allow login or deny.
     public static function login()
     {
+        self::getTemplate('login');
+    }
+
+    public static function create()
+    {
+        self::getTemplate('signUp');
+    }
+
+    public static function profile()
+    {
+        $record = accounts::findOne($_REQUEST['id']);
+        self::getTemplate('profile', $record);
+    }
+    public static function logout()
+    {
+       // $id = $_REQUEST['id'];
+        $message = 'logout successful!';
+        session_start();
+        //log out code
+        if (isset($_REQUEST['logout'])) {
+            unset($_SESSION['user']);
+            unset($_SESSION['username']);
+            unset($_SESSION['id']);
+            unset($_SESSION['role']);
+            session_destroy();
+        }
+        self::getTemplate('homepage', $message);
+    }
+
+    public static function authUser()
+    {
         //you will need to fix this so we can find users username.  YOu should add this method findUser to the accounts collection
         //when you add the method you need to look at my find one, you need to return the user object.
         //then you need to check the password and create the session if the password matches.
         //you might want to add something that handles if the password is invalid, you could add a page template and direct to that
         //after you login you can use the header function to forward the user to a page that displays their tasks.
-        //        $record = accounts::findUser($_POST['uname']);
-        print_r($_POST);
+        $userRecord = accounts::findUser($_POST['username']);
+        print_r($userRecord);/*
+        $password = $_POST['password'];
+        $login = accounts::checkPassword($password);
+
+        $usr = 'admin';
+        $pwd = 'admin123';
+
+        if($password == $pwd && $_POST['username'] == $usr)
+        {
+            self::getTemplate('admin');
+        }
+        elseif (!$login) {
+            $message = 'Incorrect username or password';
+            self::getTemplate('login', $message);
+        } else {
+            $_SESSION['user'] = $userRecord;
+            $_SESSION['id'] = $login['id'];
+            $_SESSION['username'] = $login['email'];
+            $_SESSION['role'] = 'regular';
+
+        }*/
     }
 }
+
+?>
