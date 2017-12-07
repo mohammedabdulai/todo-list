@@ -15,6 +15,7 @@ class tasksController extends http\controller
         $record = todos::findOne($_REQUEST['id']);
         self::getTemplate('show_task', $record);
     }
+
     //to call the show function the url is index.php?page=task&action=list_task
     public static function all()
     {
@@ -26,14 +27,16 @@ class tasksController extends http\controller
     //you should check the notes on the project posted in moodle for how to use active record here
     public static function create()
     {
-        print_r($_POST);
+        self::getTemplate('new_task');
     }
+
     //this is the function to view edit record form
     public static function edit()
     {
         $record = todos::findOne($_REQUEST['id']);
         self::getTemplate('edit_task', $record);
     }
+
     //this would be for the post for sending the task edit form
     public static function store()
     {
@@ -49,5 +52,20 @@ class tasksController extends http\controller
         $record = todos::findOne($_REQUEST['id']);
         $record->delete();
         print_r($_POST);
+    }
+
+    public static function save()
+    {
+        date_default_timezone_set('America/New_York');
+        $record = new todo();
+        $record->owneremail = $_POST['owneremail'];
+        $record->ownerid = $_SESSION['id'];
+        $record->createddate = date("m/d/Y h:i:sa");
+        $record->duedate = $_POST['duedate'];
+        $record->message = $_POST['message'];
+        $record->isdone = $_POST['isdone'];
+        $record->save();
+
+        self::getTemplate('show_task', $record);
     }
 }

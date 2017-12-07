@@ -1,10 +1,17 @@
 <?php
-
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 //each page extends controller and the index.php?page=tasks causes the controller to be called
 class accountsController extends http\controller
 {
     //each method in the controller is named an action.
     //to call the show function the url is index.php?page=task&action=show
+    public static function manage()
+    {
+        self::getTemplate('admin');
+    }
+
     public static function show()
     {
         $record = accounts::findOne($_REQUEST['id']);
@@ -70,17 +77,15 @@ class accountsController extends http\controller
     }
     public static function logout()
     {
-       // $id = $_REQUEST['id'];
         $message = 'logout successful!';
-        session_start();
         //log out code
-        if (isset($_REQUEST['logout'])) {
             unset($_SESSION['user']);
             unset($_SESSION['username']);
             unset($_SESSION['id']);
             unset($_SESSION['role']);
+            unset($_SESSION['login']);
             session_destroy();
-        }
+            
         self::getTemplate('homepage', $message);
     }
 
@@ -91,28 +96,41 @@ class accountsController extends http\controller
         //then you need to check the password and create the session if the password matches.
         //you might want to add something that handles if the password is invalid, you could add a page template and direct to that
         //after you login you can use the header function to forward the user to a page that displays their tasks.
-        $userRecord = accounts::findUser($_POST['username']);
-        print_r($userRecord);/*
-        $password = $_POST['password'];
-        $login = accounts::checkPassword($password);
-
-        $usr = 'admin';
+        $username = '"' . $_POST['username'] . '"';
+        $passwordEntered = $_POST['password'];
+        $usr = 'admin@admin.com';
         $pwd = 'admin123';
 
-        if($password == $pwd && $_POST['username'] == $usr)
+
+        $userRecord = accounts::findUser($username);
+        $options = [
+            'cost' => 10
+        ];
+        $password =  password_hash($userRecord->password, PASSWORD_BCRYPT, $options);
+        //print_r($userRecord->password);
+
+        if(password_verify($passwordEntered, $password))
         {
-            self::getTemplate('admin');
-        }
-        elseif (!$login) {
-            $message = 'Incorrect username or password';
-            self::getTemplate('login', $message);
-        } else {
             $_SESSION['user'] = $userRecord;
-            $_SESSION['id'] = $login['id'];
-            $_SESSION['username'] = $login['email'];
+            $_SESSION['id'] = $userRecord->id;
+            $_SESSION['username'] = $userRecord->email;
+            $_SESSION['login'] = TRUE;
             $_SESSION['role'] = 'regular';
 
-        }*/
+            self::getTemplate('show_task', $userRecord);
+
+        }
+        elseif($password == $pwd && $_POST['username'] == $usr)
+        {
+            $_SESSION['role'] = 'admin';
+            $_SESSION['login'] = TRUE;
+            self::getTemplate('admin');
+        }
+        else {
+            $message = 'Incorrect username or password';
+            self::getTemplate('login', $message);
+        }
+
     }
 }
 
