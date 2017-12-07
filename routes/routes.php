@@ -22,6 +22,14 @@ class routes
         $route->method = 'show';
         //this adds the route to the routes array.
         $routes[] = $route;
+
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'manage';
+        $route->page = 'admin';
+        $route->controller = 'tasksController';
+        $route->method = 'manage';
+        $routes[] = $route;
         //this is the index.php route for POST
         //This is an examole of the post for index
         $route = new route();
@@ -72,17 +80,34 @@ class routes
         $route = new route();
         $route->http_method = 'GET';
         $route->action = 'login';
-        $route->page = 'login';
+        $route->page = 'account';
         $route->controller = 'accountsController';
         $route->method = 'login';
+        $routes[] = $route;
+        //Route to authenticate users
+        $route = new route();
+        $route->http_method = 'POST';
+        $route->action = 'authUser';
+        $route->page = 'account';
+        $route->controller = 'accountsController';
+        $route->method = 'authUser';
         $routes[] = $route;
         //Sign up page route
         $route = new route();
         $route->http_method = 'GET';
         $route->action = 'create';
-        $route->page = 'signUp';
+        $route->page = 'account';
         $route->controller = 'accountsController';
         $route->method = 'create';
+        $routes[] = $route;
+
+        //Route to save new account info
+        $route = new route();
+        $route->http_method = 'POST';
+        $route->action = 'register';
+        $route->page = 'account';
+        $route->controller = 'accountsController';
+        $route->method = 'register';
         $routes[] = $route;
         //Profile page route
         $route = new route();
@@ -116,13 +141,30 @@ class routes
         $route->controller = 'accountsController';
         $route->method = 'edit';
         $routes[] = $route;
-
+        //Edit task route
         $route = new route();
         $route->http_method = 'GET';
         $route->action = 'edit';
         $route->page = 'task';
         $route->controller = 'tasksController';
         $route->method = 'edit';
+        $routes[] = $route;
+        //Create new task route
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'create';
+        $route->page = 'task';
+        $route->controller = 'tasksController';
+        $route->method = 'create';
+        $routes[] = $route;
+
+        //Save new task route
+        $route = new route();
+        $route->http_method = 'POST';
+        $route->action = 'save';
+        $route->page = 'task';
+        $route->controller = 'tasksController';
+        $route->method = 'save';
         $routes[] = $route;
 
         return $routes;
