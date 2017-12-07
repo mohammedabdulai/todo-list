@@ -40,7 +40,7 @@ $editForm = '<div class="container" <form action="index.php?page=task&action=sav
 			  <input type="text" class="form-control" id="isDone" value="'.$taskData['isdone'].'">
 			</div>
 			<div class="form-group">
-			<button type="submit" class="btn btn-default col-sm-6">Submit</button>
+			<button type="submit" class="btn btn-default col-sm-6">Save</button>
 			<button type="submit" class="btn btn-default col-sm-6" name="cancel">Cancel</button>
 			</div>
 			<br/>

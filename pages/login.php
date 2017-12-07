@@ -17,23 +17,25 @@ $newPage = new login();
 $header = '<div class="container"><h1>Login</h1></div>';
 
 $signUpLink = '<div class="container">
-               <h3><a href="index.php?page=signUp">Need account? Sign Up</a></h3>
+               <h3><a href="index.php?page=account&action=create">Need an account? Sign Up</a></h3>
           </div>';
 
-$loginForm = '<div class="container"><form class="form-inline" action="auth.php" method="post">
+$loginForm = '<div class="container">
+              <form class="form-inline" action="index.php?page=account&action=authUser" method="post">
 			  <div class="form-group">
 			    <label for="email">Email address:</label>
-			    <input type="email" class="form-control" name="email">
+			    <input type="email" class="form-control" name="username">
 			  </div>
 			  <div class="form-group">
 			    <label for="pwd">Password:</label>
-			    <input type="password" class="form-control" name="pwd">
+			    <input type="password" class="form-control" name="password">
 			  </div>
 			  <div class="checkbox">
 			    <label><input type="checkbox"> Remember me</label>
 			  </div>
 			  <button type="submit" class="btn btn-default">Submit</button>
-			</form></div>';
+			</form>
+			</div>';
 
 $newPage->buildPage($header);
 $newPage->buildPage($loginForm);

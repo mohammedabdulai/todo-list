@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    return header("location: index.php?page=login&action=login");
+}
 use utility\htmlTags;
 class profile extends utility\page
 {

@@ -1,6 +1,6 @@
 <?php
 use utility\htmlTags;
-class homepage extends utility\page
+class admin extends utility\page
 {
     protected $page;
 
@@ -26,29 +26,13 @@ class homepage extends utility\page
 
 }
 
-$newPage = new homepage();
+$newPage = new admin();
 
 
 $links = '<div class="container">
-<h3><a href="index.php?page=accounts&action=all">Show All Accounts</a></h3>
-<h3><a href="index.php?page=tasks&action=all">Show All Tasks</a></h3></div>';
-
-$loginForm = '<div class="container jumbotron">
-<form action="index.php?page=account&action=login" method="POST">
-
-    <div class="form-group">
-        <label><b>Username</b></label>
-        <input class="form-control" type="text" placeholder="Enter Username" name="uname" required>
-
-        <label><b>Password</b></label>
-        <input class="form-control" type="password" placeholder="Enter Password" name="psw" required>
-
-        <button type="submit">Login</button>
-    </div>
-
-
-</form>
-</div>';
+            <h3><a href="index.php?page=accounts&action=all">Show All Accounts</a></h3>
+            <h3><a href="index.php?page=tasks&action=all">Show All Tasks</a></h3>
+        </div>';
 
 $newPage->buildPage($newPage->getHeader());
 $newPage->buildPage($links);

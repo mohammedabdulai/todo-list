@@ -1,28 +1,33 @@
-<!doctype html>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-
-    <title>The HTML5 Herald</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
-
-    <link rel="stylesheet" href="css/styles.css?v=1.0">
-
-    <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-
 <?php
-//this is how you print something  $data contains the record that was selected on the table.
-print_r($data);
+/*session_start();
+if (!isset($_SESSION['username'])) {
+    return header("location: index.php?page=login&action=login");
+}*/
+use utility\htmlTags;
+class show_account extends utility\page
+{
+    protected $page;
+
+    public function buildPage($content = '')
+    {
+        return $this->page .= $content . '<br>';
+
+    }
+
+}
+
+$newPage = new show_account();
+
+$header = '<div class="container"><h1>User Account</h1></div>';
+
+$links = '<div class="container">
+<h3><a href="index.php?page=accounts&action=all">Show All Accounts</a></h3></div>';
+
+
+$newPage->buildPage($header);
+$newPage->buildPage($links);
+$table= \utility\htmlTable::generateTableFromOneRecord($data);
+$newPage->buildPage($table);
+$newPage->setHtml($newPage->buildPage());
+
 ?>
-
-
-<script src="js/scripts.js"></script>
-</body>
-</html>
