@@ -14,20 +14,13 @@ class accounts extends \database\collection
 
     public static function findUser($username)
     {
-        //$db = dbConn::getConnection();
         $tableName = get_called_class();
         $sql = 'SELECT * FROM ' . $tableName . ' WHERE email =' . $username;
-        //grab the only record for find one and return as an object
         $recordsSet = self::getResults($sql);
         return $recordsSet[0];
-       /* $stmt = $db->prepare($sql);
-        $stmt->execute();
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, 'account');
-        $recordsSet = $stmt->fetchAll();
-        return $recordsSet[0];
-       */
+
     }
 }
-?>
+
 
 
