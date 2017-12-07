@@ -1,22 +1,4 @@
-<?php 
-//turn on debugging messages
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
-//loads required classes; it finds and includes PHP file to prevent progam fail for calling a missing class
-class Manage {
-    static public  function autoload($class) 
-    {
-        include './classes/'. $class . '.php';
-    }
-}
-spl_autoload_register(array('Manage', 'autoload'));
-//instantiates the program object
-$obj = new main();
-
-/******************************
- PROFS CODE
- *****************************/
- <?php
+<?php
 //turn on debugging messages
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
@@ -67,5 +49,5 @@ $response = http\processRequest::createResponse();
 //for the todos list page you need to make a table that has links to each item.
 //  Like:  index.php?page=todos&action=show&id=1  this would show the to-do item with a link to the edit form.
 //  you could put your delete on the to_do item view or the edit form, the above still applies.
-?>
+
  ?>
