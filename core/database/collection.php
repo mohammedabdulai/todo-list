@@ -33,4 +33,3 @@ abstract class collection
         return $recordsSet[0];
     }
 }
-?>
