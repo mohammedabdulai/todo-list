@@ -72,7 +72,8 @@ class accountsController extends http\controller
 
     public static function profile()
     {
-        $record = accounts::findOne($_REQUEST['id']);
+        $id = $_SESSION['id'];
+        $record = accounts::findOne($id);
         self::getTemplate('profile', $record);
     }
     public static function logout()
@@ -117,7 +118,8 @@ class accountsController extends http\controller
             $_SESSION['login'] = TRUE;
             $_SESSION['role'] = 'regular';
 
-            self::getTemplate('show_task', $userRecord);
+            $userTasks = todos::findUserTasks($userRecord->id);
+            self::getTemplate('show_task', $userTasks);
 
         }
         elseif($password == $pwd && $_POST['username'] == $usr)
