@@ -22,11 +22,7 @@ $header = '<div class="container"><h1>Add New Task</h1></div>';
 //$taskData = get_object_vars($data);
 
 $editForm = '<div class="container" >
-            <form action="index.php?page=task&action=save" method="post">
-			<div class="form-group">
-			  <label for="email">Owner Email:</label>
-			  <input type="email" class="form-control" id="owneremail" name="owneremail" required>
-			</div>
+            <form action="index.php?page=task&action=save&id= ' . $data->id . ' &owneremail= ' . $data->email . ' " method="post">
 			<div class="form-group">
 			    <label for="dueDate">Due Date:</label>
 			    <input type="datetime-local" class="form-control" id="dueDate" name="duedate" required>
