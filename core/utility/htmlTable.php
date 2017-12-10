@@ -3,6 +3,21 @@ namespace utility;
 //namespace MyProject\mvcName;
 class htmlTable
 {
+    //Method created to route table generate to the right method
+    //Array passed to this method will call the right method to build table.
+    //Displays message if table array is empty.
+    public static function generateTable($array){
+        $arrCnt = count($array);
+        if($arrCnt < 1){
+            return "<h2>No records returned</h2>";
+        }
+        elseif($arrCnt==1){
+            return self::generateTableFromOneRecord($array);
+        }
+        else{
+            return self::genarateTableFromMultiArray($array);
+        }
+    }
     public static function genarateTableFromMultiArray($array)
     {
         $tableGen = '<div class="container jumbotron">';
