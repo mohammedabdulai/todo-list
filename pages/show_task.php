@@ -1,7 +1,6 @@
-d<?php
-/*session_start();
-if (!isset($_SESSION['username'])) {
-    return header("location: index.php?page=login&action=login");
+<?php
+/*if($_SESSION['login'] == FALSE){
+    header('Location: index.php?page=accounts&action=login');
 }*/
 use utility\htmlTags;
 class show_task extends utility\page
@@ -24,7 +23,7 @@ $links = '<div class="container">
             <h3><a href="index.php?page=tasks&action=all">Show All Tasks</a></h3>
           </div>';
 
-$form = '<div class="container">
+/*$actionMenu = '<div class="container">
             <fieldset class="fieldset"><legend>Action Center</legend>
             <div class="form-group">
             <form action="index.php?page=tasks&action=delete&id=' . $data->id . ' " method="post" id="form1">
@@ -38,13 +37,11 @@ $form = '<div class="container">
             </form>
             </div>
             </fieldset>
-        </div>';
+        </div>';*/
 
 $actionCenterDropDown = '<div class="container"><div class="dropdown"><a class="btn btn-primary dropdown-toggle" type="button" id="actionButton" data-toggle="dropdown"><span class="glyphicon glyphicon-th-list"></span> Action Center <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="index.php?page=tasks&action=delete&id=' . $data->id . ' "><span class="glyphicon glyphicon-trash"></span> Delete</a></li>
-                                <li><a href="index.php?page=task&action=edit&id=' . $data->id . ' "><span class="glyphicon glyphicon-edit"></span> Edit</a></li>
-                                <li><a href="index.php?page=task&action=create&id=' . $data->ownerid . ' "><span class="glyphicon glyphicon-plus-sign"></span> New Task</a></li>
+                                <li><a href="index.php?page=tasks&action=create&id=' . $_SESSION['id'] . ' "><span class="glyphicon glyphicon-plus-sign"></span> New Task</a></li>
                             </ul>
                          </div></div>';
 
@@ -53,7 +50,7 @@ $newPage->buildPage($actionCenterDropDown);
 //Table method modified to be generic
 $table= \utility\htmlTable::generateTable($data);
 $newPage->buildPage($table);
-//$newPage->buildPage($form);
+//$newPage->buildPage($actionMenu);
 $newPage->setHtml($newPage->buildPage());
 
 ?>
