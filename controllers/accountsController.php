@@ -29,11 +29,7 @@ class accountsController extends http\controller
     //this is to register an account i.e. insert a new account
     public static function register()
     {
-        $passwordEntered = $_POST['password'];
-        $options = [
-            'cost' => 10
-        ];
-        $password =  password_hash($passwordEntered, PASSWORD_BCRYPT, $options);
+        $hashed_password = password_hash($_POST["password"],PASSWORD_BCRYPT);
 
         $record = new account();
         $record->email = $_POST['username'];
@@ -42,7 +38,7 @@ class accountsController extends http\controller
         $record->phone = '';
         $record->birthday = '';
         $record->gender = '';
-        $record->password = $password;
+        $record->password = $hashed_password;
         $record->save();
 
         //$record = accounts::findUser($record->email);
@@ -98,19 +94,13 @@ class accountsController extends http\controller
         //you might want to add something that handles if the password is invalid, you could add a page template and direct to that
         //after you login you can use the header function to forward the user to a page that displays their tasks.
         $username = '"' . $_POST['username'] . '"';
-        $passwordEntered = $_POST['password'];
         $usr = 'admin@admin.com';
         $pwd = 'admin123';
 
 
         $userRecord = accounts::findUser($username);
-        $options = [
-            'cost' => 10
-        ];
-        $password =  password_hash($userRecord->password, PASSWORD_BCRYPT, $options);
-        //print_r($userRecord->password);
 
-        if(password_verify($passwordEntered, $password))
+        if(password_verify($_POST['password'], $userRecord->password))
         {
             $_SESSION['user'] = $userRecord;
             $_SESSION['id'] = $userRecord->id;
@@ -122,13 +112,15 @@ class accountsController extends http\controller
             self::getTemplate('show_task', $userTasks);
 
         }
-        elseif($password == $pwd && $_POST['username'] == $usr)
+        elseif($_POST['password'] == $pwd && $_POST['username'] == $usr)
         {
             $_SESSION['role'] = 'admin';
             $_SESSION['login'] = TRUE;
-            self::getTemplate('admin');
+            $record = todos::findAll();
+            self::getTemplate('admin', $record);
         }
         else {
+            echo "Login Failure!";
             $message = 'Incorrect username or password';
             self::getTemplate('login', $message);
         }
