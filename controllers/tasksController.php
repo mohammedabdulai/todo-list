@@ -14,6 +14,9 @@ class tasksController extends http\controller
     public static function show_all()
     {
         $record = todos::findUserTasks($_REQUEST['id']);
+        //print_r($record);
+        self::getTemplate('show_task', $record);
+        /*
         $arr = (array)$record;
         if(!empty($arr)){
             self::getTemplate('show_task', $record);
@@ -21,6 +24,7 @@ class tasksController extends http\controller
             $record = accounts::findOne($_REQUEST['id']);
             self::getTemplate('new_task', $record);
         }
+        */
 
     }
     //to call the show function the url is index.php?page=task&action=list_task
@@ -66,11 +70,11 @@ class tasksController extends http\controller
 
     public static function save()
     {
-        date_default_timezone_set('America/New_York');
+        date_default_timezone_set("America/New_York");
         $record = new todo();
         $record->owneremail = $_REQUEST['owneremail'];
         $record->ownerid = $_REQUEST['id'];
-        $record->createddate = date("m/d/Y h:i:sa");
+        $record->createddate = date("Y-m-d h:i:sa");
         $record->duedate = $_POST['duedate'];
         $record->message = $_POST['message'];
         $record->isdone = $_POST['isdone'];
