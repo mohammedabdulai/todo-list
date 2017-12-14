@@ -9,16 +9,18 @@ class htmlTable
     public static function generateTable($array){
         $arrCnt = count($array);
         if($arrCnt < 1){
-            return "<h2>No records returned</h2>";
-        }
-        elseif($arrCnt==1){
+            return '<div class="container jumbotron">
+                        <h2 class="text-info">You don\'t have any task, kudos!</h2>
+                        <a href="index.php?page=tasks&action=create&id='. $_SESSION['id'].'"><span class="glyphicon glyphicon-plus-sign"> </span> Create New Task </a>
+                    </div>';
+        }elseif ($arrCnt == 1){
             return self::generateTableFromOneRecord($array);
         }
         else{
-            return self::genarateTableFromMultiArray($array);
+            return self::generateTableFromMultiArray($array);
         }
     }
-    public static function genarateTableFromMultiArray($array)
+    public static function generateTableFromMultiArray($array)
     {
         $tableGen = '<div class="container jumbotron">';
         $tableGen .= '<table class="table table-condensed table-hover">';
@@ -30,21 +32,27 @@ class htmlTable
         //this gets the page being viewed so that the table routes requests to the correct controller
         $referingPage = $_REQUEST['page'];
         foreach ($fieldHeadings as $heading) {
-            $tableGen .= '<th class="bg-info">' . $heading . '</th>';
+            if($heading == 'id'){
+                $tableGen .= '<th class="bg-info">Actions</th>';
+            }else {
+                $tableGen .= '<th class="bg-info">' . $heading . '</th>';
+            }
         }
         $tableGen .= '</tr>';
         foreach ($array as $record) {
             $tableGen .= '<tr>';
             foreach ($record as $key => $value) {
                 if ($key == 'id') {
-                    $tableGen .= '<td><a href="index.php?page=' . $referingPage . '&action=show&id=' . $value . '">View</a></td>';
+                    $tableGen .= '<td><a href="index.php?page=' . $referingPage . '&action=show&id=' . $value . '"><span class="glyphicon glyphicon-eye-open"> </span>  </a>';
+                    $tableGen .= '<a href="index.php?page=' . $referingPage . '&action=edit&id=' . $value . '"><span class="glyphicon glyphicon-edit"> </span>  </a>';
+                    $tableGen .= '<a href="index.php?page=' . $referingPage . '&action=delete&id=' . $value . '"><span class="glyphicon glyphicon-trash"> </span>  </a></td>';
                 } else {
                     $tableGen .= '<td>' . $value . '</td>';
                 }
             }
             $tableGen .= '</tr>';
         }
-        $tableGen .= '</table>';
+        $tableGen .= '</table></div><hr>';
         return $tableGen;
     }
     public static function generateTableFromOneRecord($innerArray)
@@ -52,15 +60,29 @@ class htmlTable
         $tableGen = '<div class="container jumbotron">';
         $tableGen .= '<table class="table table-condensed table-hover"><tr>';
         $tableGen .= '<tr>';
+        $referingPage = $_REQUEST['page'];
         foreach ($innerArray as $innerRow => $value) {
-            $tableGen .= '<th class="bg-info">' . $innerRow . '</th>';
+            if($innerRow == 'id'){
+                $tableGen .= '<th class="bg-info">Actions</th>';
+            }else {
+                $tableGen .= '<th class="bg-info">' . $innerRow . '</th>';
+            }
         }
         $tableGen .= '</tr>';
-        foreach ($innerArray as $value) {
-            $tableGen .= '<td>' . $value . '</td>';
-        }
-        $tableGen .= '</tr></table></div><hr>';
+        $tableGen .= '<tr>';
+        $record = (array)$innerArray;
+            foreach ($record as $key => $value) {
+                if ($key == 'id') {
+                    $tableGen .= '<td><a href="index.php?page=' . $referingPage . '&action=edit&id=' . $value . '"><span class="glyphicon glyphicon-edit"> </span>  </a>';
+                    $tableGen .= '<a href="index.php?page=' . $referingPage . '&action=delete&id=' . $value . '"><span class="glyphicon glyphicon-trash"> </span>  </a></td>';
+                } else {
+                    $tableGen .= '<td>' . $value . '</td>';
+                }
+            }
+        $tableGen .= '</tr>';
+        $tableGen .= '</table></div><hr>';
         return $tableGen;
     }
 }
 ?>
+
