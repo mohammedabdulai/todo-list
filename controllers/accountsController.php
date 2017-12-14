@@ -120,7 +120,6 @@ class accountsController extends http\controller
             self::getTemplate('admin', $record);
         }
         else {
-            echo "Login Failure!";
             $message = 'Incorrect username or password';
             self::getTemplate('login', $message);
         }
