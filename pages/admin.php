@@ -1,4 +1,7 @@
 <?php
+/*if($_SESSION['login'] == FALSE){
+    header('Location: index.php?page=accounts&action=login');
+}*/
 use utility\htmlTags;
 class admin extends utility\page
 {
@@ -11,10 +14,11 @@ class admin extends utility\page
     }
     public function getHeader()
     {
+        $header ='';
         if (isset($data)) {
-            $header = '<div class="container jumbotron"><center><h3>' . $data . '</h3></center></div>';
+            $header .= '<div class="container jumbotron"><center><h3>' . $data . '</h3></center></div>';
         } else {
-            $header = ' <div class="container"><center><h1>Welcome to WebBull</h1></center>
+            $header .= ' <div class="container"><center><h1>Welcome to WebBull</h1></center>
                 <blockquote><b>Get more done with WebBull!</b><p>Create and Manage todo tasks<br>
                 Upload and view insights from CSV files<br>
                 Much more to come</p></blockquote>
