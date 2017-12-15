@@ -17,11 +17,11 @@ $newPage = new login();
 $header = '<div class="container"><h1>Login</h1></div>';
 
 $signUpLink = '<div class="container">
-               <h3><a href="index.php?page=account&action=create">Need an account? Sign Up</a></h3>
+               <h3><a href="index.php?page=accounts&action=create">Need an account? Sign Up</a></h3>
           </div>';
 
-$loginForm = '<div class="container">
-              <form class="form-inline" action="index.php?page=account&action=authUser" method="post">
+$loginForm = '<div class="container jumbotron">
+              <form class="form-inline" action="index.php?page=accounts&action=authUser" method="post">
 			  <div class="form-group">
 			    <label for="email">Email address:</label>
 			    <input type="email" class="form-control" name="username">
@@ -38,6 +38,7 @@ $loginForm = '<div class="container">
 			</div>';
 
 $newPage->buildPage($header);
+$newPage->buildPage($data);
 $newPage->buildPage($loginForm);
 $newPage->buildPage($signUpLink);
 $newPage->setHtml($newPage->buildPage());
