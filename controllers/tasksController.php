@@ -56,6 +56,9 @@ class tasksController extends http\controller
         $record = todos::findOne($_REQUEST['id']);
         $record->body = $_REQUEST['body'];
         $record->save();
+
+        $record = todos::findUserTasks($_REQUEST['id']);
+        self::getTemplate('show_task', $record);
     }
     //this is the delete function.  You actually return the edit form and then there should be 2 forms on that.
     //One form is the todo and the other is just for the delete button
@@ -70,17 +73,34 @@ class tasksController extends http\controller
 
     public static function save()
     {
+        session_start();
         date_default_timezone_set("America/New_York");
         $record = new todo();
-        $record->owneremail = $_REQUEST['owneremail'];
-        $record->ownerid = $_REQUEST['id'];
+
+        $record->owneremail = ($_SESSION['user']->email);
+        $record->ownerid = ($_SESSION['user']->id);
         $record->createddate = date("Y-m-d h:i:sa");
         $record->duedate = $_POST['duedate'];
         $record->message = $_POST['message'];
         $record->isdone = $_POST['isdone'];
         $record->save();
 
-        $record = todos::findUserTasks($_REQUEST['id']);
+        $record = todos::findUserTasks($_SESSION['user']->id);
+        self::getTemplate('show_task', $record);
+    }
+    public static function update()
+    {
+        $record = todos::findOne($_REQUEST['id']);
+
+        $record->owneremail = $_POST['owneremail'];
+        $record->duedate = $_POST['duedate'];
+        $record->message = $_POST['message'];
+        $record->isdone = $_POST['isdone'];
+
+        $record->save();
+
+        session_start();
+        $record = todos::findUserTasks($_SESSION['user']->id);
         self::getTemplate('show_task', $record);
     }
 }
