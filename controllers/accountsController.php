@@ -120,7 +120,7 @@ class accountsController extends http\controller
             self::getTemplate('admin', $record);
         }
         else {
-            $message = 'Incorrect username or password';
+            $message = '<div class="container"><b class="text-danger">Warning: Incorrect username or password</b></div>';
             self::getTemplate('login', $message);
         }
 
