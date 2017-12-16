@@ -133,6 +133,14 @@ class routes
         $route->controller = 'accountsController';
         $route->method = 'logout';
         $routes[] = $route;
+        //Save edited account
+        $route = new route();
+        $route->http_method = 'POST';
+        $route->action = 'save';
+        $route->page = 'accounts';
+        $route->controller = 'accountsController';
+        $route->method = 'save';
+        $routes[] = $route;
         //YOU WILL NEED TO ADD MORE ROUTES
         $route = new route();
         $route->http_method = 'GET';
