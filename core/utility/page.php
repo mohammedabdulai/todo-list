@@ -28,8 +28,7 @@ abstract class page
                               <li class="active"><a href="index.php?page=homepage">Home</a></li>
                               <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                  <li><a href="index.php?page=tasks&action=all">Todo List</a></li>
-                                  <li><a href="index.php?page=upload&action=show">Read CSV</a></li>
+                                  <li><a href="index.php?page=tasks&action=show_all"><span class="glyphicon glyphicon-th-list"></span> Todo List</a></li>
                                 </ul>
                               </li>
                               <li><a href="index.php?page=about">About</a></li>
@@ -51,8 +50,7 @@ abstract class page
                               <li class="active"><a href="index.php?page=homepage">Home</a></li>
                               <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Tools <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                  <li><a href="index.php?page=tasks&action=all">Todo List</a></li>
-                                  <li><a href="index.php?page=upload&action=show">Read CSV</a></li>
+                                  <li><a href="index.php?page=tasks&action=show_all"><span class="glyphicon glyphicon-th-list"></span> Todo List</a></li>
                                 </ul>
                               </li>
                               <li><a href="index.php?page=about">About</a></li>
