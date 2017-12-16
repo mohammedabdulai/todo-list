@@ -14,7 +14,7 @@ class accountsController extends http\controller
 
     public static function show()
     {
-        $record = accounts::findOne($_REQUEST['id']);
+        $record = accounts::findOne($_SESSION['id']);
         self::getTemplate('show_account', $record);
     }
     //to call the show function the url is index.php?page=task&action=list_task
@@ -55,6 +55,29 @@ class accountsController extends http\controller
         $record = accounts::findOne($_REQUEST['id']);
         self::getTemplate('edit_account', $record);
     }
+    public static function save()
+    {
+        $record = $_SESSION['user'];
+
+        if(isset($_POST['password'])){
+            $correct = password_verify($_POST['password'], $record->password);
+            if($correct){
+                if($_POST['newPassword']=== $_POST['confirmPassword']){
+                    $record->password = password_hash($_POST["newPassword"],PASSWORD_BCRYPT);
+                }
+            }
+
+        }
+
+        $record->email = $_POST['email'];
+        $record->fname = $_POST['fname'];
+        $record->lname = $_POST['lname'];
+        $record->phone = $_POST['phone'];
+
+        $record->save();
+        $record = accounts::findOne($_SESSION['id']);
+        self::getTemplate('profile', $record);
+    }
     //this is to login, here is where you find the account and allow login or deny.
     public static function login()
     {
@@ -74,7 +97,7 @@ class accountsController extends http\controller
     }
     public static function logout()
     {
-        $message = 'logout successful!';
+        $message = '<div class="container text-success"><b>logout successful!</b></div>';
         //log out code
             unset($_SESSION['user']);
             unset($_SESSION['username']);
