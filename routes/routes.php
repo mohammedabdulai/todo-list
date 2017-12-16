@@ -22,6 +22,14 @@ class routes
         $route->method = 'show';
         //this adds the route to the routes array.
         $routes[] = $route;
+        //About page route
+        $route = new route();
+        $route->http_method = 'GET';
+        $route->action = 'show';
+        $route->page = 'about';
+        $route->controller = 'aboutController';
+        $route->method = 'show';
+        $routes[] = $route;
         //Admin login route
         $route = new route();
         $route->http_method = 'GET';
