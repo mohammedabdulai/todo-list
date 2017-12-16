@@ -13,7 +13,8 @@ class tasksController extends http\controller
     //If not task yet, user is directed to create a new task.
     public static function show_all()
     {
-        $record = todos::findUserTasks($_REQUEST['id']);
+        session_start();
+        $record = todos::findUserTasks($_SESSION['id']);
         //print_r($record);
         self::getTemplate('show_task', $record);
         /*
@@ -38,7 +39,8 @@ class tasksController extends http\controller
     //you should check the notes on the project posted in moodle for how to use active record here
     public static function create()
     {
-        $record = accounts::findOne($_REQUEST['id']);
+        session_start();
+        $record = accounts::findOne($_SESSION['id']);
         self::getTemplate('new_task', $record);
     }
 
