@@ -149,7 +149,15 @@ class routes
         $route->controller = 'accountsController';
         $route->method = 'save';
         $routes[] = $route;
-        //YOU WILL NEED TO ADD MORE ROUTES
+        //Delete route for forms to work
+        $route = new route();
+        $route->http_method = 'POST';
+        $route->action = 'delete';
+        $route->page = 'tasks';
+        $route->controller = 'tasksController';
+        $route->method = 'delete';
+        $routes[] = $route;
+        //Delete route in other for links to work
         $route = new route();
         $route->http_method = 'GET';
         $route->action = 'delete';
