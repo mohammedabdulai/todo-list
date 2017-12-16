@@ -14,18 +14,13 @@ class tasksController extends http\controller
     public static function show_all()
     {
         session_start();
-        $record = todos::findUserTasks($_SESSION['id']);
-        //print_r($record);
-        self::getTemplate('show_task', $record);
-        /*
-        $arr = (array)$record;
-        if(!empty($arr)){
-            self::getTemplate('show_task', $record);
+        if(!isset($_SESSION['id'])){
+            $message = '<div class="container text-danger"><b>You must login to create or view tasks</b></div>';
+            self::getTemplate('login', $message);
         }else{
-            $record = accounts::findOne($_REQUEST['id']);
-            self::getTemplate('new_task', $record);
+            $record = todos::findUserTasks($_SESSION['id']);
+            self::getTemplate('show_task', $record);
         }
-        */
 
     }
     //to call the show function the url is index.php?page=task&action=list_task
@@ -40,14 +35,18 @@ class tasksController extends http\controller
     public static function create()
     {
         session_start();
-        $record = accounts::findOne($_SESSION['id']);
-        self::getTemplate('new_task', $record);
-    }
+        if(!isset($_SESSION['id'])){
+            $message = '<div class="container text-danger"><b>You must login to create a task</b></div>';
+            self::getTemplate('login', $message);
+        }else{
+            $record = accounts::findOne($_SESSION['id']);
+            self::getTemplate('new_task', $record);
+        }
 
+    }
     //this is the function to view edit record form
     public static function edit()
     {
-        //$id = todos::findTaskIDbyOwnerID($_REQUEST['id']);
         $record = todos::findOne($_REQUEST['id']);
         self::getTemplate('edit_task', $record);
     }
