@@ -22,20 +22,33 @@ final class account extends \database\model
         $records = todos::findAll();
         return $records;
     }
+    public function hashPassword($password) {
+        $password = password_hash($password, PASSWORD_DEFAULT);
+        return $password;
+    }
     //add a method to compare the passwords this is where bcrypt should be done and it should return TRUE / FALSE for login
-    public static function checkPassword($password)
-    {
-        $userRecord = accounts::finduser($_POST['username']);
-       $login = FALSE;
-        $sysPassword = $userRecord->password;
-        if (md5($password) == $sysPassword)
-        {
-            $login = TRUE;
-        }else{
-            self::$login = FALSE;
-        }
+    public function verifyPassword($LoginPassword) {
+        return password_verify($LoginPassword, $this->password);
+    }
 
-        return $login;
+    public function validate()
+    {
+        $valid = TRUE;
+        if($this->email == '') {
+            $valid = FALSE;
+        }
+        return $valid;
+    }
+    public function getClean($in)
+    {
+        $out = trim($in);
+        $out = stripslashes($out);
+        $out = htmlspecialchars($out);
+
+        if(empty($out)){
+            $out = '';
+        }
+        return $out;
     }
 }
 ?>
