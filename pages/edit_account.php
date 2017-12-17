@@ -22,6 +22,7 @@ $header = '<div class="container"><h1>Edit Acccount</h1></div>';
 $userData = get_object_vars($data);
 
 $editForm = '<div class="container">
+            <div class="container jumbotron col-sm-8">
             <form action="index.php?page=accounts&action=save&id='.$userData['id'].'" method="post">
 			<div class="form-group">
 			    <label for="email">First Name:</label>
@@ -51,9 +52,9 @@ $editForm = '<div class="container">
 			  <label for="pwd">Confirm Password:</label>
 			  <input type="password" class="form-control" id="ConfirmPwd" name="confirmPassword" placeholder="Must match new password">
 			</div>
-			<button type="submit" class="btn btn-default col-sm-6"><span class="glyphicon glyphicon-save"></span>Save</button>
-			<a class="btn btn-default col-sm-6" href="index.php?page=accounts&action=show" name="cancel"><span class="glyphicon glyphicon-remove"></span>Cancel</a>
-			</form></div>';
+			<button type="submit" class="btn btn-default col-sm-6"><span class="glyphicon glyphicon-save"></span> Save</button>
+			<a class="btn btn-default col-sm-6" href="index.php?page=accounts&action=profile" name="cancel"><span class="glyphicon glyphicon-remove"></span> Cancel</a>
+			</form></div></div>';
 
 $newPage->buildPage($header);
 $newPage->buildPage($editForm);
