@@ -32,13 +32,14 @@ class accountsController extends http\controller
         $hashed_password = password_hash($_POST["password"],PASSWORD_BCRYPT);
 
         $record = new account();
-        $record->email = $_POST['username'];
-        $record->fname = $_POST['fname'];
-        $record->lname = $_POST['lname'];
+        $record->email = $record->getClean($_POST['username']);
+        $record->fname = $record->getClean($_POST['fname']);
+        $record->lname = $record->getClean($_POST['lname']);
         $record->phone = '';
         $record->birthday = '';
         $record->gender = '';
         $record->password = $hashed_password;
+
         $record->save();
 
         //$record = accounts::findUser($record->email);
@@ -52,28 +53,33 @@ class accountsController extends http\controller
     }
     public static function edit()
     {
-        $record = accounts::findOne($_REQUEST['id']);
+        $record = accounts::findOne($_SESSION['id']);
         self::getTemplate('edit_account', $record);
     }
     public static function save()
     {
-        $record = $_SESSION['user'];
+        $id = $_SESSION['id'];
+        $record = accounts::findOne($id);
+
+        $record->email = $record->getClean($_POST['email']);
+        $record->fname = $record->getClean($_POST['fname']);
+        $record->lname = $record->getClean($_POST['lname']);
+        $record->phone = $record->getClean($_POST['phone']);
+        $record->gender = '';
+        $record->birthday = '';
+        $record->password = $_SESSION['user']->password;
 
         if(isset($_POST['password'])){
-            $correct = password_verify($_POST['password'], $record->password);
+            $correct = password_verify($record->getClean($_POST['password']), $record->password);
             if($correct){
-                if($_POST['newPassword']=== $_POST['confirmPassword']){
-                    $record->password = password_hash($_POST["newPassword"],PASSWORD_BCRYPT);
+                if($record->getClean($_POST['newPassword'])=== $record->getClean($_POST['confirmPassword'])){
+                    $record->password = password_hash($record->getClean($_POST["newPassword"]),PASSWORD_BCRYPT);
                 }
             }
 
         }
 
-        $record->email = $_POST['email'];
-        $record->fname = $_POST['fname'];
-        $record->lname = $_POST['lname'];
-        $record->phone = $_POST['phone'];
-
+        //print_r($record);
         $record->save();
         $record = accounts::findOne($_SESSION['id']);
         self::getTemplate('profile', $record);
