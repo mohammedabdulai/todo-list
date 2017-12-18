@@ -1,7 +1,6 @@
 <?php
-/*session_start();
-if (!isset($_SESSION['username'])) {
-    return header("location: index.php?page=login&action=login");
+/*if($_SESSION['login'] == FALSE){
+    header('Location: index.php?page=accounts&action=login');
 }*/
 use utility\htmlTags;
 class show_account extends utility\page

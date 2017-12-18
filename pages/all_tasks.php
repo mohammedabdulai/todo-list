@@ -22,7 +22,7 @@ $links = '<div class="container">
 
 $newPage->buildPage($header);
 $newPage->buildPage($links);
-$table= utility\htmlTable::genarateTableFromMultiArray($data);
+$table= utility\htmlTable::generateTableFromMultiArray($data);
 $newPage->buildPage($table);
 $newPage->setHtml($newPage->buildPage());
 

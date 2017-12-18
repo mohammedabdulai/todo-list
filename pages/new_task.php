@@ -1,6 +1,6 @@
 <?php
-/*if (!isset($_SESSION['username'])) {
-    return header("location: index.php?page=account&action=login");
+/*if($_SESSION['login'] == FALSE){
+    header('Location: index.php?page=accounts&action=login');
 }*/
 use utility\htmlTags;
 class new_task extends utility\page

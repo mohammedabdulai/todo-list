@@ -21,14 +21,14 @@ $header = '<div class="container"><h1>Edit Task</h1></div>';
 
 $taskData = get_object_vars($data);
 
-$editForm = '<div class="container"><form action="index.php?page=tasks&action=update&id=' . $taskData['id'] . ' " method="post" id="edit_task">
+$editForm = '<div class="container jumbotron"><form action="index.php?page=tasks&action=update&id=' . $taskData['id'] . ' " method="post" id="edit_task">
 			<div class="form-group">
 			  <label for="email">Owner Email:</label>
 			  <input type="email" class="form-control" id="OwnerEmail" value="'.$taskData['owneremail'].'" name="owneremail" required>
 			</div>
 			<div class="form-group">
 			    <label for="dueDate">Due Date:</label>
-			    <input type="datetime-local" class="form-control" id="dueDate" value="'.$taskData['duedate'].'" name="duedate" required>
+			    <input type="text" placeholder="'.$taskData['duedate'].'" class="form-control" id="dueDate" value="'.$taskData['duedate'].'" name="duedate" required>
             </div>
 			<div class="form-group">
 			  <label for="message">Message:</label>
@@ -47,7 +47,7 @@ $editForm = '<div class="container"><form action="index.php?page=tasks&action=up
             <hr>
             <fieldset class="fieldset"><legend>Action Center</legend>
 			<form action="index.php?page=tasks&action=delete&id=' . $taskData['id'] . ' " method="post" id="form1">
-                <button type="submit" class="btn btn-default"form="form1" value="delete">Delete</button>
+                <button type="submit" class="btn btn-primary"form="form1" value="delete"><span class="glyphicon glyphicon-trash"> </span> Delete</button>
             </form>
             </fieldset>
             <hr>
