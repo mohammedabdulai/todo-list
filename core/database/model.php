@@ -4,6 +4,7 @@ abstract class model
 {
     public function save()
     {
+        $INSERT ='';
         if ($this->id != '') {
             $sql = $this->update();
         } else {
@@ -44,7 +45,7 @@ abstract class model
         $comma = " ";
         $sql = 'UPDATE ' . $tableName . ' SET ';
         foreach ($array as $key => $value) {
-            if (!empty($value)) {
+            if (isset($value)) {
                 $sql .= $comma . $key . ' = "' . $value . '"';
                 $comma = ", ";
             }

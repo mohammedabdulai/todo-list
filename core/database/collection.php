@@ -32,20 +32,5 @@ abstract class collection
         $recordsSet = self::getResults($sql);
         return $recordsSet[0];
     }
-    static public function findUserTasks($id)
-    {
-        $tableName = get_called_class();
-        $sql = 'SELECT * FROM ' . $tableName . ' WHERE ownerid =' . $id;
-        //grab the record and count.
-        $recordsSet = self::getResults($sql);
-        if(count($recordsSet)< 1){
-            return NULL;
-        }
-        elseif(count($recordsSet)==1){
-            return $recordsSet[0];
-        }
-        else{
-            return self::getResults($sql);
-        }
-    }
+
 }
