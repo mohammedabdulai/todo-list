@@ -9,7 +9,7 @@ class aboutController extends http\controller
 {
     public static function show()
     {
-        $about = '<div class="container"><h2>This is about page</h2></div>';
+        $about = '<div class="container jumbotron"><h2>This is about page</h2></div>';
         self::getTemplate('about', $about);
     }
 
