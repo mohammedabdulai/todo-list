@@ -83,7 +83,7 @@ class tasksController extends http\controller
         $record->createddate = date("Y-m-d h:i:sa");
         $record->duedate = $_POST['duedate'];
         $record->message = $_POST['message'];
-        $record->isdone = $_POST['isdone'];
+        $record->isdone = '0';
         $record->save();
 
         $record = todos::findUserTasks($_SESSION['user']->id);
@@ -93,10 +93,10 @@ class tasksController extends http\controller
     {
         $record = todos::findOne($_REQUEST['id']);
 
-        $record->owneremail = $_POST['owneremail'];
-        $record->duedate = $_POST['duedate'];
-        $record->message = $_POST['message'];
-        $record->isdone = $_POST['isdone'];
+        $record->owneremail = $record->getClean($_POST['owneremail']);
+        $record->duedate = $record->getClean($_POST['duedate']);
+        $record->message = $record->getClean($_POST['message']);
+        $record->isdone = $record->getClean($_POST['isdone']);
 
         $record->save();
 
