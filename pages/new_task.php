@@ -23,7 +23,7 @@ $header = '<div class="container"><h1>Add New Task</h1></div>';
 
 $editForm = '<div class="container jumbotron" >
             <div class="row">
-            <div class="col-md-6 col-md-offset-3"
+            <div class="col-md-6 col-md-offset-3">
             <form action="index.php?page=tasks&action=save&id= ' . $data->id . ' &owneremail= ' . $data->email . ' " method="post">
 			<div class="form-group">
 			    <label for="dueDate">Due Date:</label>
