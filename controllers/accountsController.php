@@ -29,21 +29,55 @@ class accountsController extends http\controller
     //this is to register an account i.e. insert a new account
     public static function register()
     {
+        $success = '<div class="container text-success"><b>Account created successfully! You may login</b></div>';
+        $message = '';
+        $clean = TRUE;
         $hashed_password = password_hash($_POST["password"],PASSWORD_BCRYPT);
 
         $record = new account();
-        $record->email = $record->getClean($_POST['username']);
-        $record->fname = $record->getClean($_POST['fname']);
-        $record->lname = $record->getClean($_POST['lname']);
-        $record->phone = '';
-        $record->birthday = '';
-        $record->gender = '';
-        $record->password = $hashed_password;
 
-        $record->save();
+        if(!$record->getClean($_REQUEST['username'])){
+            $message = '<div class="container text-danger"><b>Invalid email entered</b></div><br>';
+            $clean = FALSE;
+        }else{
+            $record->email = $record->getClean($_REQUEST['username']);
+        }
 
-        //$record = accounts::findUser($record->email);
-        self::getTemplate('homepage', $record);
+        if(!$record->getClean($_REQUEST['fname'])){
+            $message .= '<div class="container text-danger"><b>Invalid first name entered</b></div><br>';
+            $clean = FALSE;
+        }else{
+            $record->fname = $record->getClean($_REQUEST['fname']);
+        }
+
+        if(!$record->getClean($_REQUEST['lname'])){
+            $message .= '<div class="container text-danger"><b>Invalid last name entered</b></div><br>';
+            $clean = FALSE;
+        }else{
+            $record->lname = $record->getClean($_REQUEST['lname']);
+        }
+
+        if(!$record->getClean($_REQUEST['password'])){
+            $message .= '<div class="container text-danger"><b>Invalid password name entered</b></div><br>';
+            $clean = FALSE;
+        }else{
+            $record->password = $hashed_password;
+        }
+
+        /*$record->fname = $record->getClean($_REQUEST['fname']);
+        $record->lname = $record->getClean($_REQUEST['lname']);*/
+        $record->phone = $record->getClean($_REQUEST['phone']);
+        $record->birthday = $record->getClean($_REQUEST['birthday']);
+        $record->gender = $record->getClean($_REQUEST['gender']);
+        //$record->password = $hashed_password;
+        if($clean==TRUE){
+            $record->save();
+            self::getTemplate('login', $success);
+        }
+        else{
+        $error = "<div class='alert alert-warning' role='alert' id='warning_message'>Warning <i class='glyphicon glyphicon-alert'></i>$message</div>";
+        self::getTemplate('signUp', $error);
+        }
     }
 
     //this is the function to save the user the user profile
