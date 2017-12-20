@@ -6,8 +6,15 @@ class tasksController extends http\controller
     //to call the show function the url is index.php?page=task&action=show
     public static function show()
     {
-        $record = todos::findOne($_REQUEST['id']);
-        self::getTemplate('show_task', $record);
+        session_start();
+        if(!isset($_SESSION['id'])){
+            $message = '<div class="container text-danger"><b>You must login to create or view tasks</b></div>';
+            self::getTemplate('login', $message);
+        }else{
+            $record = todos::findOne($_REQUEST['id']);
+            //print_r($record);
+            self::getTemplate('show_task', $record);
+        }
     }
     //Method to show all logged on user tasks.
     //If not task yet, user is directed to create a new task.
@@ -19,6 +26,7 @@ class tasksController extends http\controller
             self::getTemplate('login', $message);
         }else{
             $record = todos::findUserTasks($_SESSION['id']);
+            //print_r($record);
             self::getTemplate('show_task', $record);
         }
 
@@ -47,8 +55,14 @@ class tasksController extends http\controller
     //this is the function to view edit record form
     public static function edit()
     {
-        $record = todos::findOne($_REQUEST['id']);
-        self::getTemplate('edit_task', $record);
+        session_start();
+        if(!isset($_SESSION['id'])) {
+            $message = '<div class="container text-danger"><b>You must login to edit tasks</b></div>';
+            self::getTemplate('login', $message);
+        }else{
+            $record = todos::findOne($_REQUEST['id']);
+            self::getTemplate('edit_task', $record);
+        }
     }
 
     //this would be for the post for sending the task edit form
@@ -65,11 +79,18 @@ class tasksController extends http\controller
     //One form is the todo and the other is just for the delete button
     public static function delete()
     {
-        $record = todos::findOne($_REQUEST['id']);
-        $ownerid = $record->ownerid;
-        $record->delete();
-        $record = todos::findUserTasks($ownerid);
-        self::getTemplate('show_task', $record);
+        session_start();
+        if(!isset($_SESSION['id'])) {
+            $message = '<div class="container text-danger"><b>You must login to delete tasks</b></div>';
+            self::getTemplate('login', $message);
+        }else {
+            $record = todos::findOne($_REQUEST['id']);
+            $ownerid = $record->ownerid;
+            $record->delete();
+            $record = todos::findUserTasks($ownerid);
+            //print_r($record);
+            self::getTemplate('show_task', $record);
+        }
     }
 
     public static function save()
@@ -93,10 +114,10 @@ class tasksController extends http\controller
     {
         $record = todos::findOne($_REQUEST['id']);
 
-        $record->owneremail = $record->getClean($_POST['owneremail']);
-        $record->duedate = $record->getClean($_POST['duedate']);
-        $record->message = $record->getClean($_POST['message']);
-        $record->isdone = $record->getClean($_POST['isdone']);
+        $record->owneremail = $_POST['owneremail'];
+        $record->duedate = $_POST['duedate'];
+        $record->message = $_POST['message'];
+        $record->isdone = $_POST['isdone'];
 
         $record->save();
 
