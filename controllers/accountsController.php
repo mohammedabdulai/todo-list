@@ -264,38 +264,36 @@ class accountsController extends http\controller
         }
         //Check if username exist in accounts table
         //If no user found, throws error message and allows visitor to create an account
-        if(!$userRecord){
-            $message = '<div class="container text-danger"><b>No user found for username ' .$username.'. 
+        if(isset($userRecord)) {
+            if (!$userRecord) {
+                $message = '<div class="container text-danger"><b>No user found for username ' . $username . '. 
                         <a href="index.php?page=accounts&action=create"> Please click here to create an account</a></b></div>';
-            self::getTemplate('login', $message);
-        //If user exist, match the password entered with the hashed password stored in the database
-        //If password matches, start a session and set user record, id, username, and role
-        //If username and password matches admin, start session and set role as admin
-        //If all fails, warm the visitor of invalid credentials.
-        //On successful login, direct the user to see tasks.
-        }else{
-            if(password_verify($_REQUEST['password'], $userRecord->password))
-            {
-                $_SESSION['user'] = $userRecord;
-                $_SESSION['id'] = $userRecord->id;
-                $_SESSION['username'] = $userRecord->email;
-                $_SESSION['login'] = TRUE;
-                $_SESSION['role'] = 'regular';
-
-                $userTasks = todos::findUserTasks($userRecord->id);
-                self::getTemplate('show_task', $userTasks);
-
-            }
-            elseif($_POST['password'] == $pwd && $_POST['username'] == $usr)
-            {
-                $_SESSION['role'] = 'admin';
-                $_SESSION['login'] = TRUE;
-                $record = todos::findAll();
-                self::getTemplate('admin', $record);
-            }
-            else {
-                $message = '<div class="container"><b class="text-danger">Warning: Incorrect username or password</b></div>';
                 self::getTemplate('login', $message);
+                //If user exist, match the password entered with the hashed password stored in the database
+                //If password matches, start a session and set user record, id, username, and role
+                //If username and password matches admin, start session and set role as admin
+                //If all fails, warm the visitor of invalid credentials.
+                //On successful login, direct the user to see tasks.
+            } else {
+                if (password_verify($_REQUEST['password'], $userRecord->password)) {
+                    $_SESSION['user'] = $userRecord;
+                    $_SESSION['id'] = $userRecord->id;
+                    $_SESSION['username'] = $userRecord->email;
+                    $_SESSION['login'] = TRUE;
+                    $_SESSION['role'] = 'regular';
+
+                    $userTasks = todos::findUserTasks($userRecord->id);
+                    self::getTemplate('show_task', $userTasks);
+
+                } elseif ($_POST['password'] == $pwd && $_POST['username'] == $usr) {
+                    $_SESSION['role'] = 'admin';
+                    $_SESSION['login'] = TRUE;
+                    $record = todos::findAll();
+                    self::getTemplate('admin', $record);
+                } else {
+                    $message = '<div class="container"><b class="text-danger">Warning: Incorrect username or password</b></div>';
+                    self::getTemplate('login', $message);
+                }
             }
         }
 
