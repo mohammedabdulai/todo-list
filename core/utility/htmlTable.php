@@ -60,9 +60,8 @@ class htmlTable
         $tableGen = '<div class="container jumbotron">';
         $tableGen .= '<table class="table table-condensed table-hover"><tr>';
         $referingPage = $_REQUEST['page'];
-
-        $record = $innerArray['0'];
-        foreach ($record as $innerRow => $value) {
+        
+        foreach ($innerArray as $innerRow => $value) {
             if($innerRow == 'id'){
                 $tableGen .= '<th class="bg-info">Actions</th>';
             }else {
@@ -72,8 +71,7 @@ class htmlTable
         $tableGen .= '</tr>';
         $tableGen .= '<tr>';
 
-        $record = $innerArray['0'];
-            foreach ($record as $key => $value) {
+            foreach ($innerArray as $key => $value) {
                 if ($key == 'id') {
                     $tableGen .= '<td><a href="index.php?page=' . $referingPage . '&action=edit&id=' . $value . '"><span class="glyphicon glyphicon-edit"> </span>  </a>';
                     $tableGen .= '<a href="index.php?page=' . $referingPage . '&action=delete&id=' . $value . '"><span class="glyphicon glyphicon-trash"> </span>  </a></td>';
