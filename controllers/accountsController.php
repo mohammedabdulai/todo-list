@@ -137,7 +137,7 @@ class accountsController extends http\controller
     }
     public static function logout()
     {
-        $message = '<div class="container text-success"><b>logout successful!</b></div>';
+        $message = '<div class="container text-info"><b>logout successful! You may login back in or exit the browser.</b></div>';
         //log out code
             unset($_SESSION['user']);
             unset($_SESSION['username']);
@@ -146,45 +146,66 @@ class accountsController extends http\controller
             unset($_SESSION['login']);
             session_destroy();
             
-        self::getTemplate('homepage', $message);
+        self::getTemplate('login', $message);
     }
 
     public static function authUser()
     {
-        //you will need to fix this so we can find users username.  YOu should add this method findUser to the accounts collection
-        //when you add the method you need to look at my find one, you need to return the user object.
-        //then you need to check the password and create the session if the password matches.
-        //you might want to add something that handles if the password is invalid, you could add a page template and direct to that
-        //after you login you can use the header function to forward the user to a page that displays their tasks.
+        //grab user email and wrap with double quotes for database acceptance.
         $username = '"' . $_POST['username'] . '"';
+        //Admin username and password
         $usr = 'admin@admin.com';
         $pwd = 'admin123';
-
-
-        $userRecord = accounts::findUser($username);
-
-        if(password_verify($_POST['password'], $userRecord->password))
-        {
-            $_SESSION['user'] = $userRecord;
-            $_SESSION['id'] = $userRecord->id;
-            $_SESSION['username'] = $userRecord->email;
-            $_SESSION['login'] = TRUE;
-            $_SESSION['role'] = 'regular';
-
-            $userTasks = todos::findUserTasks($userRecord->id);
-            self::getTemplate('show_task', $userTasks);
-
-        }
-        elseif($_POST['password'] == $pwd && $_POST['username'] == $usr)
-        {
-            $_SESSION['role'] = 'admin';
-            $_SESSION['login'] = TRUE;
-            $record = todos::findAll();
-            self::getTemplate('admin', $record);
-        }
-        else {
-            $message = '<div class="container"><b class="text-danger">Warning: Incorrect username or password</b></div>';
+        //Sanitize user input with to get rid of unwanted or harmful characters.
+        //Throws error message if bad data is found
+        if(!$newUserName = filter_var($username, FILTER_SANITIZE_EMAIL)){
+            $message = '<div class="container text-danger"><b>Invalid username entered</b></div>';
             self::getTemplate('login', $message);
+        }
+        //Validate user input to make sure it's in the right format.
+        //Throws error message if cannot meet right format
+        if(!filter_var($newUserName, FILTER_VALIDATE_EMAIL)){
+            $message = '<div class="container text-danger"><b>Invalid username entered</b></div>';
+            self::getTemplate('login', $message);
+        }else{
+            //Fetch user records with the sanitized and validated username
+            $userRecord = accounts::findUser($username);
+        }
+        //Check if username exist in accounts table
+        //If no user found, throws error message and allows visitor to create an account
+        if(!$userRecord){
+            $message = '<div class="container text-danger"><b>No user found for username ' .$username.'. 
+                        <a href="index.php?page=accounts&action=create"> Please click here to create an account</a></b></div>';
+            self::getTemplate('login', $message);
+        //If user exist, match the password entered with the hashed password stored in the database
+        //If password matches, start a session and set user record, id, username, and role
+        //If username and password matches admin, start session and set role as admin
+        //If all fails, warm the visitor of invalid credentials.
+        //On successful login, direct the user to see tasks.
+        }else{
+            if(password_verify($_REQUEST['password'], $userRecord->password))
+            {
+                $_SESSION['user'] = $userRecord;
+                $_SESSION['id'] = $userRecord->id;
+                $_SESSION['username'] = $userRecord->email;
+                $_SESSION['login'] = TRUE;
+                $_SESSION['role'] = 'regular';
+
+                $userTasks = todos::findUserTasks($userRecord->id);
+                self::getTemplate('show_task', $userTasks);
+
+            }
+            elseif($_POST['password'] == $pwd && $_POST['username'] == $usr)
+            {
+                $_SESSION['role'] = 'admin';
+                $_SESSION['login'] = TRUE;
+                $record = todos::findAll();
+                self::getTemplate('admin', $record);
+            }
+            else {
+                $message = '<div class="container"><b class="text-danger">Warning: Incorrect username or password</b></div>';
+                self::getTemplate('login', $message);
+            }
         }
 
     }
