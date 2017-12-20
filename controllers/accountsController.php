@@ -23,11 +23,11 @@ class accountsController extends http\controller
         $records = accounts::findAll();
         self::getTemplate('all_accounts', $records);
     }
-    //to call the show function the url is called with a post to: index.php?page=task&action=create
-    //this is a function to create new tasks
-    //you should check the notes on the project posted in moodle for how to use active record here
     //this is to register an account i.e. insert a new account
-    public static function register()
+    //NOTE: this method is not being used anymore
+    //Check for register() method which has validation
+    public static function register_old()
+        //Don't use this method. It has no proper validation.
     {
         $success = '<div class="container text-success"><b>Account created successfully! You may login</b></div>';
         $message = '';
@@ -77,6 +77,106 @@ class accountsController extends http\controller
         else{
         $error = "<div class='alert alert-warning' role='alert' id='warning_message'>Warning <i class='glyphicon glyphicon-alert'></i>$message</div>";
         self::getTemplate('signUp', $error);
+        }
+    }
+
+    public static function register()
+    {
+        $success = '<div class="container text-success"><b>Account created successfully! You may login</b></div>';
+        $message ='';
+        $error = FALSE;
+
+        $record = new account();
+
+        //Clean up user input with getClean function and set to user object property accordingly
+        //Required fields
+        //Validate and set email
+        if(!filter_var($record->getClean($_REQUEST['username']), FILTER_VALIDATE_EMAIL)){
+            $message .= '<div class="container text-danger"><p>Invalid email entered!</p></div>';
+            $error = TRUE;
+        }else{
+            $record->email = $record->getClean($_REQUEST['username']);
+        }
+        //Validate and set first name
+        if($record->getClean($_REQUEST['fname']) == '' || strlen($record->getClean($_REQUEST['fname']))<2){
+            $message .= '<div class="container text-danger"><p>Invalid first name! Name must be at least two characters</p></div>';
+            $error = TRUE;
+        }elseif(is_numeric($_REQUEST['fname'])){
+            $message .= '<div class="container text-danger"><p>Numeric entered! Name must be at least two characters</p></div>';
+            $error = TRUE;
+        }else{
+            $record->fname = $record->getClean($_REQUEST['fname']);
+        }
+        //Validate and set last name
+        if($record->getClean($_REQUEST['lname']) == '' || strlen($record->getClean($_REQUEST['lname']))<2){
+            $message .= '<div class="container text-danger"><p>Invalid last name! Name must be at least two characters</p></div>';
+            $error = TRUE;
+        } elseif(is_numeric($_REQUEST['lname'])){
+            $message .= '<div class="container text-danger"><p>Numeric entered! Last name must be at least two characters</p></div>';
+            $error = TRUE;
+        }else {
+            $record->lname = $record->getClean($_REQUEST['lname']);
+        }
+        //Check if optional fields are set and get clean version of inputs.
+        //If optional fields are not set, the the object property to empty string for database acceptance.
+        //Check and set phone
+        if(isset($_REQUEST['phone'])){
+            $record->phone = $record->getClean($_REQUEST['phone']);
+        }else{$record->phone = '';}
+        //Checks and set gender
+        if(isset($_REQUEST['gender'])){
+            $record->gender = $record->getClean($_REQUEST['gender']);
+        }else{$record->gender = '';}
+        //Checks and set birthday
+        if(isset($_REQUEST['birthday'])){
+            $record->birthday = $record->getClean($_REQUEST['birthday']);
+        }else{$record->birthday = '';}
+
+        //Check if new password fields contain value and old password is not set.
+        if(!is_null($_REQUEST['password']) || !empty($_REQUEST['password']) || $_REQUEST['password'] != ''){
+            if(!$_REQUEST['confirmPwd'] === $_REQUEST['confirmPwd']){
+                $message .='<div class="container text-danger"><p>Password must match confirm password</p></div>';
+                $error = TRUE;
+            }elseif(is_int($_REQUEST['password'])){
+                $message .='<div class="container text-danger"><p>Password must contain letters and numbers (6 - 8 characters long).</p></div>';
+                $error = TRUE;
+            }elseif(strlen($_REQUEST['password']) < 6 || strlen($_REQUEST['password']) > 8){
+                $message .='<div class="container text-danger"><p>Password must contain letters and numbers (6 - 8 characters long).</p></div>';
+                $error = TRUE;
+            }elseif (is_string($_REQUEST['password'])) {
+                $hashed_password = password_hash($_POST["password"],PASSWORD_BCRYPT);
+                $record->password = $hashed_password;
+            }
+            else{
+                $message .='<div class="container text-danger"><p>Invalid password. Enter letters and numbers (6 - 8 long).</p></div>';
+                $error = TRUE;
+            }
+        }
+        //Check if confirm password field is set but new password field is not
+        if(isset($_REQUEST['password']) && !empty($_REQUEST['password'])){
+            if(!isset($_REQUEST['confirmPwd']) || empty($_REQUEST['confirmPwd'])){
+                $message .='<div class="container text-danger"><p>Confirm password must match password</p></div>';
+                $error = TRUE;
+            }
+        }
+        //Check if new password filed is set but confirm password field is not.
+        if(isset($_REQUEST['password'])&& !empty($_REQUEST['password'])){
+            if(!isset($_REQUEST['confirmPwd']) || empty($_REQUEST['confirmPwd'])){
+                $message .='<div class="container text-danger"><p>New password must match confirm password</p></div>';
+                $error = TRUE;
+            }
+        }
+
+        //Check if there were any errors in validation.
+        //If not, account data gets saved.
+        if(!$error){
+            //Save new user account
+            $record->save();
+            //Direct the user to sign in page
+            self::getTemplate('login', $success);
+            //If there was any validation error, send user back to signup form with error message(s).
+        }else{
+            self::getTemplate('signUp', $message);
         }
     }
 
