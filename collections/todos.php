@@ -10,7 +10,12 @@ class todos extends database\collection
     {
         $tableName = get_called_class();
         $sql = 'SELECT * FROM ' . $tableName . ' WHERE ownerid =' . $id;
-        return self::getResults($sql);
+        $recordSet = self::getResults($sql);
+        if(count($recordSet)==1){
+            return $recordSet[0];
+        }else{
+            return $recordSet;
+        }
     }
 
     public static  function findTaskIDbyOwnerID($id) {
